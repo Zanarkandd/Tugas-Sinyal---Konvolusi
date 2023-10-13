@@ -1,0 +1,25 @@
+def convolution_1d(signal, kernel):
+    signal_len = len(signal)
+    kernel_len = len(kernel)
+    output_len = signal_len + kernel_len - 1
+    output = [0] * output_len
+
+    for i in range(output_len):
+        output[i] = 0
+        for j in range(kernel_len):
+            if i - j >= 0 and i - j < signal_len:
+                output[i] += signal[i - j] * kernel[j]
+
+    return output
+
+# Print hasilnya
+print ("Native Implementation of Convolution")
+print ("Tio Raihan Nuvolari")
+print ("5009211112")
+
+# Definisikan dua sinyal 1 dimensi dalam array
+signal = [1, 2, 3, 4]
+kernel = [0.5, 1, 0.5]
+
+result = convolution_1d(signal, kernel)
+print(result)
