@@ -1,0 +1,36 @@
+import cmath
+
+def fft(x):
+    N = len(x)
+    if N <= 1:
+        return x
+    
+    even = fft(x[0::2])
+    odd = fft(x[1::2])
+    
+    T = [cmath.exp(-2j * cmath.pi * k / N) * odd[k] for k in range(N // 2)]
+    
+    return [even[k] + T[k] for k in range(N // 2)] + [even[k] - T[k] for k in range(N // 2)]
+
+# Contoh penggunaan:
+x = [0, 1, 2, 3, 4, 5, 6, 7]
+result = fft(x)
+
+# Plot hasil FFT
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(8, 4))
+
+plt.subplot(2, 1, 1)
+plt.plot(x)
+plt.title('Sinyal Asli')
+
+# Hitung magnitude FFT
+magnitude = [abs(val) for val in result]
+
+plt.subplot(2, 1, 2)
+plt.plot(magnitude)
+plt.title('Magnitude FFT')
+plt.tight_layout()
+
+plt.show()
