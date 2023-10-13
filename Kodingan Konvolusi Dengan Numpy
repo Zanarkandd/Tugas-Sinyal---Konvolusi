@@ -1,0 +1,12 @@
+import numpy as np
+
+def convolution_1d(signal, kernel):
+    result = np.convolve(signal, kernel, mode='valid')
+    return result
+
+# Example usage:
+signal = [1, 2, 3, 4, 5]
+kernel = [0, 0.5, 1, 1.5]
+
+result = convolution_1d(signal, kernel)
+print(result)
