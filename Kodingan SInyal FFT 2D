@@ -1,0 +1,55 @@
+import math
+import cmath
+
+def fft2D(x):
+    def fft(x):
+        N = len(x)
+        if N <= 1:
+            return x
+        even = fft(x[0::2])
+        odd = fft(x[1::2])
+        T = [cmath.exp(-2j * math.pi * k / N) * odd[k] for k in range(N // 2)]
+        return [even[k] + T[k] for k in range(N // 2)] + [even[k] - T[k] for k in range(N // 2)]
+
+    N = len(x)
+
+    # FFT dalam kolom
+    columns = [fft([x[i][j] for i in range(N)]) for j in range(N)]
+    
+    # FFT dalam baris
+    rows = [fft(row) for row in x]
+
+    # Transpose hasil FFT dalam kolom
+    columns = [[columns[j][i] for j in range(N)] for i in range(N)]
+
+    return columns
+
+# Contoh penggunaan
+x = [
+    [0, 1, 2, 3],
+    [4, 5, 6, 7],
+    [8, 9, 10, 11],
+    [12, 13, 14, 15]
+]
+
+result = fft2D(x)
+
+# Plot hasil FFT
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(8, 4))
+
+plt.subplot(2, 1, 1)
+plt.imshow(x, cmap='gray')
+plt.title('Gambar Asli')
+
+# Hitung magnitude FFT
+magnitude = [[abs(val) for val in row] for row in result]
+
+plt.subplot(2, 1, 2)
+plt.imshow(magnitude, cmap='gray')
+plt.title('Magnitude FFT')
+plt.tight_layout()
+
+plt.show()
+
